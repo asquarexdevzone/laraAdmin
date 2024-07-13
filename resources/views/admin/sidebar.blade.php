@@ -1,22 +1,22 @@
 <div class="leftside-menu">
 
                 <!-- Brand Logo Light -->
-                <a href="index.html" class="logo logo-light">
+                <a href="#" class="logo logo-light">
                     <span class="logo-lg">
-                        <img src="{{asset('images/logo.png')}}" alt="logo">
+                        <img src="{{asset('images/asquarex-logo.png')}}" alt="logo">
                     </span>
                     <span class="logo-sm">
-                        <img src="{{asset('images/logo-sm.png')}}" alt="small logo">
+                        <img src="{{asset('images/asquarex-logo.png')}}" alt="small logo">
                     </span>
                 </a>
 
                 <!-- Brand Logo Dark -->
-                <a href="index.html" class="logo logo-dark">
+                <a href="#" class="logo logo-dark">
                     <span class="logo-lg">
-                        <img src="{{asset('images/logo-dark.png')}}" alt="dark logo">
+                        <img src="{{asset('images/asquarex-logo.png')}}" alt="dark logo">
                     </span>
                     <span class="logo-sm">
-                        <img src="images/logo-sm.png" alt="small logo">
+                        <img src="{{asset('images/asquarex-logo.png')}}" alt="small logo">
                     </span>
                 </a>
 
@@ -32,7 +32,7 @@
                         </li>
 
                         <li class="side-nav-item">
-                            <a href="{{'/admin/add-product'}}" aria-expanded="false" aria-controls="sidebarForms" class="side-nav-link">
+                            <a href="{{'/admin/product'}}" aria-expanded="false" aria-controls="sidebarForms" class="side-nav-link">
                                 <i class="ri-table-line"></i>
                                 <span> Product </span>
                                 

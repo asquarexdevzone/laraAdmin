@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Dashboard | LaravelAdmin</title>
+    <title>Add Your Product Here | LaravelAdmin</title>
     @include('admin.include')
     <!-- Datatables css -->
     <link href="{{asset('vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet" type="text/css" />
@@ -64,32 +64,31 @@
                                         <h4 class="header-title mb-0"> Add Main Product Here </h4>
                                     </div>
                                     <div class="card-body">
-                                        <form>
-                                            <div id="basicwizard">
-
-                                                <div class="b-0 mb-0">
+                                    <form action="/admin/add-product" method="POST">
+                                            @csrf
+                                            <div id="basicwizard"> 
                                                     <div>
                                                         <div class="row">
                                                             <div class="col-12">
                                                                 <div class="row mb-3">
-                                                                    <label class="col-md-3 col-form-label" for="userName">User name</label>
+                                                                    <label class="col-md-3 col-form-label" for="product">Product Name :</label>
                                                                     <div class="col-md-9">
-                                                                        <input type="text" class="form-control" id="userName" name="userName" value="Velonic">
+                                                                        <input type="text" class="form-control" id="ProductName" name="ProductName" placeholder="Enter Product Name">
                                                                     </div>
                                                                 </div>
-                                                                <div class="row mb-3">
-                                                                    <label class="col-md-3 col-form-label" for="password"> Password</label>
+                                                                <!-- <div class="row mb-3">
+                                                                    <label class="col-md-3 col-form-label" for="password"> Slug :</label>
                                                                     <div class="col-md-9">
-                                                                        <input type="text" id="password" name="password" class="form-control" disabled value="123456789">
+                                                                        <input type="text" id="password" name="ProductSlug" class="form-control" disabled value="123456789">
                                                                     </div>
-                                                                </div>
+                                                                </div> -->
 
                                                             </div> <!-- end col -->
                                                         </div> <!-- end row -->
 
                                                         <ul class="list-inline wizard mb-0">
                                                             <li class="next list-inline-item float-end">
-                                                                <a href="javascript:void(0);" class="btn btn-info">Add Product <i class="ri-check-line ms-1"></i></a>
+                                                                <button type = "submit" class="btn btn-info">Add Product <i class="ri-check-line ms-1"></i></button>
                                                                 <a href="javascript:void(0);" class="btn btn-danger">Cancel<i class="ri-close-fill ms-1"></i></a>
                                                             </li>
                                                         </ul>
@@ -124,16 +123,18 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>AC336 508 2157</td>
-                                                    <td>July 24, 1950</td>
-                                                    <td>
-                                                        <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
-                                                                class="ri-settings-3-line"></i></a>
-                                                        <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
-                                                                class="ri-delete-bin-2-line"></i></a>
-                                                    </td>
-                                                </tr>
+                                                @foreach($products as $product)
+                                                    <tr>
+                                                        <td>{{ $product->id }}</td>
+                                                        <td>{{ $product->name }}</td>
+                                                        <td>
+                                                            <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
+                                                                    class="ri-settings-3-line"></i></a>
+                                                            <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
+                                                                    class="ri-delete-bin-2-line"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div> <!-- end table-responsive-->

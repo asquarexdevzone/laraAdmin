@@ -5,7 +5,7 @@
     <meta content="Techzaa" name="author" />
 
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{asset('images/favicon.ico')}}">
+    <link rel="shortcut icon" href="{{asset('images/asquarex-logo.png')}}">
 
     <!-- Theme Config Js -->
     <script src="{{asset('js/config.js')}}"></script>
