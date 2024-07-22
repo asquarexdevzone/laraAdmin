@@ -12,7 +12,7 @@ class ProductController extends Controller
     public function addProductView()
     {
         $product = Product::all();
-        return view('admin.product',['products' => $product]);
+        return view('admin.product-master',['products' => $product]);
     }
 
     public function addProduct(Request $request)
@@ -31,6 +31,6 @@ class ProductController extends Controller
         $product->slug = $slug;
 
         $product->save();
-        return redirect('admin/product');
+        return redirect('admin/product-master');
     }
 }

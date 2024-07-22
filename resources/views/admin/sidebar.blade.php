@@ -32,9 +32,17 @@
                         </li>
 
                         <li class="side-nav-item">
-                            <a href="{{'/admin/product'}}" aria-expanded="false" aria-controls="sidebarForms" class="side-nav-link">
+                            <a href="{{'/admin/product-master'}}" aria-expanded="false" aria-controls="sidebarForms" class="side-nav-link">
                                 <i class="ri-table-line"></i>
-                                <span> Product </span>
+                                <span> Product Master </span>
+                                
+                            </a>
+                        </li>
+
+                        <li class="side-nav-item">
+                            <a href="{{'/admin/color-master'}}" aria-expanded="false" aria-controls="sidebarForms" class="side-nav-link">
+                                <i class="ri-table-line"></i>
+                                <span> Color Master </span>
                                 
                             </a>
                         </li>

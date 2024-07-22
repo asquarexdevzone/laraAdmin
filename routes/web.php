@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Functionalities\ProductController;
+use App\Http\Controllers\Functionalities\ColorController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,5 +21,8 @@ Route::get('/admin', [AuthController::class, 'login'])->name('admin.login');
 Route::get('/admin/register', [AuthController::class, 'register'])->name('admin.register');
 Route::get('/admin/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
 
-Route::get('/admin/product', [ProductController::class, 'addProductView'])->name('add.productview');
+Route::get('/admin/product-master', [ProductController::class, 'addProductView'])->name('add.productview');
 Route::post('/admin/add-product', [ProductController::class, 'addProduct'])->name('add.product');
+
+Route::get('/admin/color-master', [ColorController::class, 'addColorView'])->name('add.colorview');
+Route::get('/admin/add-color', [ColorController::class, 'addColor'])->name('add.color');
