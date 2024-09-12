@@ -2,15 +2,14 @@
 <html lang="en">
 
 <head>
-    <title>Add Your Color Here | LaravelAdmin</title>
+    <title>Add Your Sizes Here | LaravelAdmin</title>
     @include('admin.include')
     <!-- Datatables css -->
-    <link href="{{asset('vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet"
-        type="text/css" />
+    <link href="{{asset('vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css')}}" rel="stylesheet"
         type="text/css" />
-    <link href="{{asset('vendor/datatables.net-fixedcolumns-bs5/css/fixedColumns.bootstrap5.min.css')}}"
-        rel="stylesheet" type="text/css" />
+    <link href="{{asset('vendor/datatables.net-fixedcolumns-bs5/css/fixedColumns.bootstrap5.min.css')}}" rel="stylesheet"
+        type="text/css" />
     <link href="{{asset('vendor/datatables.net-fixedheader-bs5/css/fixedHeader.bootstrap5.min.css')}}" rel="stylesheet"
         type="text/css" />
     <link href="{{asset('vendor/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css')}}" rel="stylesheet"
@@ -49,10 +48,10 @@
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
                                         <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
-                                        <li class="breadcrumb-item"><a href="javascript: void(0);">color Master</a></li>
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Size Master</a></li>
                                     </ol>
                                 </div>
-                                <h4 class="page-title">Color Master</h4>
+                                <h4 class="page-title">Size Master</h4>
                             </div>
                         </div>
                     </div>
@@ -60,93 +59,88 @@
 
                     <div class="row">
                         <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="header-title mb-0"> Add Color Here </h4>
-                                </div>
-                                <div class="card-body">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="header-title mb-0"> Add Size Here </h4>
+                                    </div>
+                                    <div class="card-body">
                                     @if(session('success'))
                                         <div class="alert alert-success">
                                             {{ session('success') }}
                                         </div>
                                     @endif
-                                    <form action="/admin/add-color" method="POST">
-                                        @csrf
-                                        <div id="basicwizard">
-                                            <div>
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="row mb-3">
-                                                            <label class="col-md-3 col-form-label" for="color">Color
-                                                                Name :</label>
-                                                            <div class="col-md-9">
-                                                                <input type="text" class="form-control" id="ColorName"
-                                                                    name="ColorName" placeholder="Enter Color Name"
-                                                                    required>
-                                                            </div>
-                                                        </div>
+                                    <form action="/admin/add-size" method="POST">
+                                            @csrf
+                                            <div id="basicwizard"> 
+                                                    <div>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="row mb-3">
+                                                                    <label class="col-md-3 col-form-label" for="color">Size :</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" class="form-control" id="size" name="size" placeholder="Enter Size">
+                                                                    </div>
+                                                                </div>
 
-                                                    </div> <!-- end col -->
-                                                </div> <!-- end row -->
+                                                            </div> <!-- end col -->
+                                                        </div> <!-- end row -->
 
-                                                <ul class="list-inline wizard mb-0">
-                                                    <li class="next list-inline-item float-end">
-                                                        <button type="submit" class="btn btn-info">Add Color <i
-                                                                class="ri-check-line ms-1"></i></button>
-                                                        <a href="javascript:void(0);" class="btn btn-danger">Cancel<i
-                                                                class="ri-close-fill ms-1"></i></a>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                                        <ul class="list-inline wizard mb-0">
+                                                            <li class="next list-inline-item float-end">
+                                                                <button type = "submit" class="btn btn-info">Add Size <i class="ri-check-line ms-1"></i></button>
+                                                                <a href="javascript:void(0);" class="btn btn-danger">Cancel<i class="ri-close-fill ms-1"></i></a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
 
-                                        </div> <!-- tab-content -->
-                                </div> <!-- end #basicwizard-->
-                                </form>
+                                                </div> <!-- tab-content -->
+                                            </div> <!-- end #basicwizard-->
+                                        </form>
 
-                            </div> <!-- end card-body -->
-                        </div> <!-- end card-->
-                    </div> <!-- end col -->
-                </div><!-- end row -->
+                                    </div> <!-- end card-body -->
+                                </div> <!-- end card-->
+                            </div> <!-- end col -->
+                    </div><!-- end row -->
 
-                <div class="row">
-                    <div class="col-xl-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="header-title">Your Added Color</h4>
-                                <p class="text-muted mb-0">
-                                    Play With Your Color 😉
-                                </p>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive-sm">
-                                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
-                                        <thead>
-                                            <tr>
-                                                <th>Color ID</th>
-                                                <th>Color Name</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($colors as $color)
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="header-title">Your Added Size</h4>
+                                    <p class="text-muted mb-0">
+                                        Play With Your Sizes 😉
+                                    </p>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive-sm">
+                                        <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                                            <thead>
                                                 <tr>
-                                                    <td>{{ $color->id }}</td>
-                                                    <td>{{ $color->name }}</td>
-                                                    <td>
-                                                        <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
-                                                                class="ri-settings-3-line"></i></a>
-                                                        <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
-                                                                class="ri-delete-bin-2-line"></i></a>
-                                                    </td>
+                                                    <th>Size ID</th>
+                                                    <th>Size</th>
+                                                    <th>Action</th>
                                                 </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div> <!-- end table-responsive-->
-                            </div> <!-- end card body-->
-                        </div> <!-- end card -->
-                    </div><!-- end col-->
-                </div> <!-- container -->
+                                            </thead>
+                                            <tbody>
+                                                @foreach($sizes as $size)
+                                                    <tr>
+                                                        <td>{{ $size->id }}</td>
+                                                        <td>{{ $size->name }}</td>
+                                                        <td>
+                                                            <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
+                                                                    class="ri-settings-3-line"></i></a>
+                                                            <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
+                                                                    class="ri-delete-bin-2-line"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div> <!-- end table-responsive-->
+                                </div> <!-- end card body-->
+                            </div> <!-- end card -->
+                        </div><!-- end col-->
+                    </div> <!-- container -->
             </div> <!-- content -->
 
             <!-- Footer Start -->
@@ -338,8 +332,8 @@
                         <h5 class="my-3 fs-16 fw-bold">Layout Position</h5>
 
                         <div class="btn-group checkbox" role="group">
-                            <input type="radio" class="btn-check" name="data-layout-position" id="layout-position-fixed"
-                                value="fixed">
+                            <input type="radio" class="btn-check" name="data-layout-position"
+                                id="layout-position-fixed" value="fixed">
                             <label class="btn btn-soft-primary w-sm" for="layout-position-fixed">Fixed</label>
 
                             <input type="radio" class="btn-check" name="data-layout-position"
@@ -379,13 +373,12 @@
 
     <!-- Vector Map js -->
     <script src="{{ asset('vendor/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js') }}"></script>
-    <script
-        src="{{ asset('vendor/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js') }}"></script>
+    <script src="{{ asset('vendor/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js') }}"></script>
 
     <!-- Dashboard App js -->
     <script src="{{ asset('js/pages/dashboard.js') }}"></script>
 
-    <!-- Datatables js -->
+     <!-- Datatables js -->
     <script src="{{asset('vendor/datatables.net/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('vendor/datatables.net-bs5/js/dataTables.bootstrap5.min.js')}}"></script>
     <script src="{{asset('vendor/datatables.net-responsive/js/dataTables.responsive.min.js')}}"></script>

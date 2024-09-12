@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Add Your Color Here | LaravelAdmin</title>
+    <title>Add Your Catalogues Here | LaravelAdmin</title>
     @include('admin.include')
     <!-- Datatables css -->
     <link href="{{asset('vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet"
@@ -49,10 +49,11 @@
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
                                         <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
-                                        <li class="breadcrumb-item"><a href="javascript: void(0);">color Master</a></li>
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Catalogue Master</a>
+                                        </li>
                                     </ol>
                                 </div>
-                                <h4 class="page-title">Color Master</h4>
+                                <h4 class="page-title">Catalogue Master</h4>
                             </div>
                         </div>
                     </div>
@@ -62,46 +63,130 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="header-title mb-0"> Add Color Here </h4>
+                                    <h4 class="header-title mb-0"> Add Catalogue Here </h4>
                                 </div>
                                 <div class="card-body">
+
                                     @if(session('success'))
                                         <div class="alert alert-success">
                                             {{ session('success') }}
                                         </div>
                                     @endif
-                                    <form action="/admin/add-color" method="POST">
+
+                                    <form action="{{ route('add.catalogue') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <div id="basicwizard">
                                             <div>
                                                 <div class="row">
                                                     <div class="col-12">
+
                                                         <div class="row mb-3">
-                                                            <label class="col-md-3 col-form-label" for="color">Color
-                                                                Name :</label>
+                                                            <label class="col-md-3 col-form-label"
+                                                                for="catalogue-name">Catalogue Name :</label>
                                                             <div class="col-md-9">
-                                                                <input type="text" class="form-control" id="ColorName"
-                                                                    name="ColorName" placeholder="Enter Color Name"
+                                                                <input type="text" class="form-control"
+                                                                    id="catalogue-name" name="catalogue_name"
+                                                                    placeholder="Enter Catalogue Name" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mb-3">
+                                                            <label class="col-md-3 col-form-label" for="product">Select
+                                                                Product :</label>
+                                                            <div class="col-md-9">
+                                                                <select class="form-select" id="product" name="product"
                                                                     required>
+                                                                    <option value="" disabled selected>Select product
+                                                                    </option>
+                                                                    @foreach ($products as $product)
+                                                                        <option value="{{ $product->id }}">
+                                                                            {{ $product->name }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mb-3">
+                                                            <label class="col-md-3 col-form-label" for="category">Select
+                                                                Category :</label>
+                                                            <div class="col-md-9">
+                                                                <select class="form-select" id="category"
+                                                                    name="category" required>
+                                                                    <option value="" disabled selected>Select Category
+                                                                    </option>
+                                                                    @foreach ($categories as $category)
+                                                                        <option value="{{ $category->id }}">
+                                                                            {{ $category->name }}
+                                                                        </option>
+                                                                    @endforeach
+
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mb-3">
+                                                            <label class="col-md-3 col-form-label" for="size">Select
+                                                                Size :</label>
+                                                            <div class="col-md-9">
+                                                                <select class="form-select" id="size" name="size"
+                                                                    required>
+                                                                    <option value="" disabled selected>Select Size
+                                                                    </option>
+                                                                    @foreach ($sizes as $size)
+                                                                        <option value="{{ $size->id }}">
+                                                                            {{ $size->name }}
+                                                                        </option>
+                                                                    @endforeach
+
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mb-3">
+                                                            <label class="col-md-3 col-form-label"
+                                                                for="categoryname">Catalogue Link :</label>
+                                                            <div class="col-md-9">
+                                                                <input type="text" class="form-control"
+                                                                    id="catalogue-link" name="catalogue_link"
+                                                                    placeholder="Enter Catalogue link If Any" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mb-3">
+                                                            <label class="col-md-3 col-form-label" for="image">Choose
+                                                                Coverpage :</label>
+                                                            <div class="col-md-9">
+                                                                <input type="file" id="catalogue-coverpage"
+                                                                    class="form-control" name="catalogue_coverpage">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mb-3">
+                                                            <label class="col-md-3 col-form-label" for="image">Choose
+                                                                Catalogue From Device :</label>
+                                                            <div class="col-md-9">
+                                                                <input type="file" id="catalogue-pdf"
+                                                                    class="form-control" name="catalogue_pdf">
                                                             </div>
                                                         </div>
 
                                                     </div> <!-- end col -->
                                                 </div> <!-- end row -->
-
+    
                                                 <ul class="list-inline wizard mb-0">
                                                     <li class="next list-inline-item float-end">
-                                                        <button type="submit" class="btn btn-info">Add Color <i
+                                                        <button type="submit" class="btn btn-info">Add Catalogue <i
                                                                 class="ri-check-line ms-1"></i></button>
                                                         <a href="javascript:void(0);" class="btn btn-danger">Cancel<i
                                                                 class="ri-close-fill ms-1"></i></a>
                                                     </li>
                                                 </ul>
                                             </div>
-
                                         </div> <!-- tab-content -->
                                 </div> <!-- end #basicwizard-->
                                 </form>
+
 
                             </div> <!-- end card-body -->
                         </div> <!-- end card-->
@@ -112,9 +197,9 @@
                     <div class="col-xl-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="header-title">Your Added Color</h4>
+                                <h4 class="header-title">Your Added Catalogues</h4>
                                 <p class="text-muted mb-0">
-                                    Play With Your Color 😉
+                                    Play With Your Catalogues 😉
                                 </p>
                             </div>
                             <div class="card-body">
@@ -122,23 +207,31 @@
                                     <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
                                         <thead>
                                             <tr>
-                                                <th>Color ID</th>
-                                                <th>Color Name</th>
+                                                <th>Catalogue ID</th>
+                                                <th>Catalogue Name</th>
+                                                <th>Product</th>
+                                                <th>Category</th>
+                                                <th>Size</th>
+                                                <th>Cover Page</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($colors as $color)
-                                                <tr>
-                                                    <td>{{ $color->id }}</td>
-                                                    <td>{{ $color->name }}</td>
-                                                    <td>
-                                                        <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
-                                                                class="ri-settings-3-line"></i></a>
-                                                        <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
-                                                                class="ri-delete-bin-2-line"></i></a>
-                                                    </td>
-                                                </tr>
+                                            @foreach ($catalogues as $catalogue)
+                                            <tr>
+                                                <td>{{ $catalogue->id }}</td>
+                                                <td>{{ $catalogue->name }}</td>
+                                                <td>{{ $catalogue->product_name }}</td>
+                                                <td>{{ $catalogue->category_name }}</td>
+                                                <td>{{ $catalogue->size_name }}</td>
+                                                <td><img src="{{ asset('images/catalogues_coverpages/' . $catalogue->image) }}" alt="image" class="img-fluid avatar-md rounded"></td>
+                                                <td>
+                                                    <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
+                                                            class="ri-settings-3-line"></i></a>
+                                                    <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
+                                                            class="ri-delete-bin-2-line"></i></a>
+                                                </td>
+                                            </tr>
                                             @endforeach
                                         </tbody>
                                     </table>

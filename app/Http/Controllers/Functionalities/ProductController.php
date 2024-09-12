@@ -19,7 +19,6 @@ class ProductController extends Controller
     {
         $request->validate([
             'ProductName' =>  'required',
-            
         ]);
 
         $productname = $request->input('ProductName');
@@ -31,6 +30,6 @@ class ProductController extends Controller
         $product->slug = $slug;
 
         $product->save();
-        return redirect('admin/product-master');
+        return redirect()->route('add.productview')->with('success', 'Product added successfully.');
     }
 }
