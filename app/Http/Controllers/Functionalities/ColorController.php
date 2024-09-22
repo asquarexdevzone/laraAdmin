@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use App\Models\color;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class ColorController extends Controller
 {
@@ -30,5 +32,11 @@ class ColorController extends Controller
 
         $color->save();
         return redirect()->route('add.colorview')->with('success', 'Color added successfully.');
+    }
+
+    public function deleteColor($id){
+        $delete_color = DB::table('colors')->where('id', $id)->delete();
+
+        return redirect()->route('add.colorview')->with('success', 'Color deleted successfully.');
     }
 }

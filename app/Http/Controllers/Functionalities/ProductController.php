@@ -6,19 +6,20 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
     public function addProductView()
     {
         $product = Product::all();
-        return view('admin.product-master',['products' => $product]);
+        return view('admin.product-master', ['products' => $product]);
     }
 
     public function addProduct(Request $request)
     {
         $request->validate([
-            'ProductName' =>  'required',
+            'ProductName' => 'required',
         ]);
 
         $productname = $request->input('ProductName');
@@ -31,5 +32,12 @@ class ProductController extends Controller
 
         $product->save();
         return redirect()->route('add.productview')->with('success', 'Product added successfully.');
+    }
+
+    public function deleteProduct($id)
+    {
+        $delete_product = DB::table('products')->where('id', $id)->delete();
+
+        return redirect()->route('add.productview')->with('success', 'Product deleted successfully.');
     }
 }

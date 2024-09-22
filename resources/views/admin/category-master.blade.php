@@ -68,12 +68,12 @@
                                 <div class="card-body">
                                     
                                     @if(session('success'))
-                                        <div class="alert alert-success">
+                                    <div id="alert-success" class="alert alert-success">
                                             {{ session('success') }}
                                         </div>
                                     @endif
 
-                                    <form action="{{ route('add.category') }}" method="POST"
+                                    <form action="/admin/add-category" method="POST"
                                         enctype="multipart/form-data">
                                         @csrf
                                         <div id="basicwizard">
@@ -166,7 +166,7 @@
                                                 <td>
                                                     <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
                                                             class="ri-settings-3-line"></i></a>
-                                                    <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
+                                                    <a href="/admin/delete-category/{{$category->id}}" class="text-reset fs-16 px-1"> <i
                                                             class="ri-delete-bin-2-line"></i></a>
                                                 </td>
                                             </tr>

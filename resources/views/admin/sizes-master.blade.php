@@ -65,7 +65,7 @@
                                     </div>
                                     <div class="card-body">
                                     @if(session('success'))
-                                        <div class="alert alert-success">
+                                    <div id="alert-success" class="alert alert-success">
                                             {{ session('success') }}
                                         </div>
                                     @endif
@@ -129,7 +129,7 @@
                                                         <td>
                                                             <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
                                                                     class="ri-settings-3-line"></i></a>
-                                                            <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
+                                                            <a href="/admin/delete-size/{{$size->id}}" class="text-reset fs-16 px-1"> <i
                                                                     class="ri-delete-bin-2-line"></i></a>
                                                         </td>
                                                     </tr>

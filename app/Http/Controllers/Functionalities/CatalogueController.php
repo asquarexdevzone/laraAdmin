@@ -58,4 +58,9 @@ class CatalogueController extends Controller
 
         return redirect()->route('add.catalogueview')->with('success', 'Catalogue added successfully.');
     }
+
+    public function deleteCatalogue($id){
+        $delete_catalogue = DB::table('catalogues')->where('id', $id)->delete();
+        return redirect()->route('add.catalogueview')->with('success', 'Catalogue deleted successfully.');
+    }
 }

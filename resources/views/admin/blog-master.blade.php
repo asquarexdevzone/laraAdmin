@@ -4,6 +4,15 @@
 <head>
     <title>Add Your Blog Here | LaravelAdmin</title>
     @include('admin.include')
+
+    <!-- <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" /> -->
+
+    <!-- Quill css -->
+    <link href="{{asset('vendor/quill/quill.core.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('vendor/quill/quill.snow.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('vendor/quill/quill.bubble.css')}}" rel="stylesheet" type="text/css" />
+
+
 </head>
 
 <body>
@@ -54,11 +63,11 @@
                                 </div>
                                 <div class="card-body">
                                     @if(session('success'))
-                                        <div class="alert alert-success">
+                                        <div id="alert-success" class="alert alert-success">
                                             {{ session('success') }}
                                         </div>
                                     @endif
-                                    <form action="/admin/add-blog" method="POST">
+                                    <form action="/admin/add-blog" method="POST" id="blogForm">
                                         @csrf
                                         <div id="basicwizard">
                                             <div>
@@ -92,71 +101,36 @@
                                                                     </div>
                                                                     <ul class="list-group list-group-flush">
                                                                         <li class="list-group-item">
-                                                                            
+                                                                            <div class="mb-2">
+                                                                                <div id="snow-editor"
+                                                                                    style="height: 300px;"
+                                                                                    name="blog_description">
+                                                                                </div><!-- end Snow-editor-->
+                                                                                <input type="hidden"
+                                                                                    name="blog_description"
+                                                                                    id="blogDescription">
+                                                                            </div>
                                                                         </li>
                                                                     </ul>
                                                                 </div>
-                                                            </div> <!-- end col -->
-                                                        </div> <!-- end row -->
-                                                        <ul class="list-inline wizard mb-0">
-                                                            <li class="next list-inline-item float-end">
-                                                                <button type="submit" class="btn btn-info">Add Blog <i
-                                                                        class="ri-check-line ms-1"></i></button>
-                                                                <a href="javascript:void(0);"
-                                                                    class="btn btn-danger">Cancel<i
-                                                                        class="ri-close-fill ms-1"></i></a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div> <!-- tab-content -->
-                                            </div> <!-- end #basicwizard-->
+                                                            </div> <!-- end row -->
+                                                            <ul class="list-inline wizard mb-0">
+                                                                <li class="next list-inline-item float-end">
+                                                                    <button type="submit" class="btn btn-info">Add Blog
+                                                                        <i class="ri-check-line ms-1"></i></button>
+                                                                    <a href="javascript:void(0);"
+                                                                        class="btn btn-danger">Cancel<i
+                                                                            class="ri-close-fill ms-1"></i></a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div> <!-- tab-content -->
+                                                </div> <!-- end #basicwizard-->
                                     </form>
                                 </div> <!-- end card-body -->
                             </div> <!-- end card-->
                         </div> <!-- end col -->
                     </div><!-- end row -->
-
-                    <!-- CKEditor Script Here -->
-                    <script type="importmap">
-                        {
-                            "imports": {
-                                "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.1.0/ckeditor5.js",
-                                "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.1.0/"
-                            }
-                        }
-                    </script>
-
-                    <script type="module">
-                        import {
-                            ClassicEditor,
-                            Essentials,
-                            Bold,
-                            Italic,
-                            Font,
-                            Paragraph
-                        } from 'ckeditor5';
-
-                        ClassicEditor
-                            .create(document.querySelector('#editor'), {
-                                plugins: [Essentials, Bold, Italic, Font, Paragraph],
-                                toolbar: {
-                                    items: [
-                                        'undo', 'redo', '|', 'bold', 'italic', '|',
-                                        'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
-                                    ]
-                                }
-                            })
-                            .then(editor => {
-                                window.editor = editor;
-
-                                document.querySelector('form').addEventListener('submit', function () {
-                                    document.querySelector('#blog_description').value = editor.getData();
-                                });
-                            })
-                            .catch(error => {
-                                console.error('There was a problem initializing the CKEditor:', error);
-                            });
-                    </script>
 
                     <div class="row">
                         <div class="col-xl-12">
@@ -179,16 +153,18 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>data-1</td>
-                                                    <td>data-2</td>
-                                                    <td>
-                                                        <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
-                                                                class="ri-settings-3-line"></i></a>
-                                                        <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
-                                                                class="ri-delete-bin-2-line"></i></a>
-                                                    </td>
-                                                </tr>
+                                                @foreach ($blogs as $blog)
+                                                    <tr>
+                                                        <td>{{$blog->id}}</td>
+                                                        <td>{{$blog->title}}</td>
+                                                        <td>
+                                                            <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
+                                                                    class="ri-settings-3-line"></i></a>
+                                                            <a href="/admin/delete-blog/{{$blog->id}}" class="text-reset fs-16 px-1"> <i
+                                                                    class="ri-delete-bin-2-line"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div> <!-- end table-responsive-->
@@ -452,7 +428,24 @@
         <!-- App js -->
         <script src="{{asset('js/app.min.js')}}"></script>
 
-        
+        <!-- <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script> -->
+
+        <!-- Quill Editor js -->
+        <script src="{{asset('vendor/quill/quill.min.js')}}"></script>
+
+        <!-- Quill Demo js -->
+        <script src="{{asset('js/pages/quilljs.init.js')}}"></script>
+
+        <!-- Initialize Quill editor -->
+        <script>
+
+            $("#blogForm").on("submit", function () {
+                var myEditor = document.querySelector('#snow-editor')
+                var html = myEditor.children[0].innerHTML
+                $('#blogDescription').val(html)
+            })
+        </script>
+
 </body>
 
 </html>

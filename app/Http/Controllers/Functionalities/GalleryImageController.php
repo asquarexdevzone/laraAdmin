@@ -4,6 +4,8 @@ namespace App\Http\Controllers\functionalities;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\GalleryImage;
+use Illuminate\Support\Facades\DB;
+
 
 class GalleryImageController extends Controller
 {
@@ -26,5 +28,10 @@ class GalleryImageController extends Controller
         $galleryImage->save();
 
         return response()->json(['success' => $filename]);
+    }
+
+    public function deleteGalleryImage($id){
+        $delete_gallery_image = DB::table('gallery_images')->where('id', $id)->delete();
+        return redirect()->route('add.gallery-images-view')->with('success', 'Gallery image deleted successfully.');
     }
 }
