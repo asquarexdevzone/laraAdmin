@@ -134,9 +134,11 @@
                                                     <td>{{ $product->id }}</td>
                                                     <td>{{ $product->name }}</td>
                                                     <td>
-                                                        <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
-                                                                class="ri-settings-3-line" data-bs-toggle="modal"
-                                                                data-bs-target="#signup-modal"></i></a>
+                                                        <a href="javascript:void(0);" class="text-reset fs-16 px-1"
+                                                            onclick="editProduct({{ $product->id }})">
+                                                            <i class="ri-settings-3-line" data-bs-toggle="modal"
+                                                                data-bs-target="#product-modal"></i>
+                                                        </a>
                                                         <a href="/admin/delete-product/{{$product->id}}"
                                                             class="text-reset fs-16 px-1"> <i
                                                                 class="ri-delete-bin-2-line"></i></a>
@@ -154,24 +156,23 @@
 
             <div class="card-body">
                 <!-- Signup modal content -->
-                <div id="signup-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                <div id="product-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-body">
-                                <form class="ps-3 pe-3" action="#">
-
+                                <form id="updateProductForm" method="POST" action="#">
+                                    @csrf
+                                    @method('PUT')
                                     <div class="mb-3">
-                                        <label for="username" class="form-label">Update Product Name</label>
-                                        <input class="form-control" type="text" id="username" required=""
-                                            placeholder="Michael Zenaty">
+                                        <label for="pro_name" class="form-label">Update Product Name</label>
+                                        <input class="form-control" type="text" id="pro_name" name="ProductName"
+                                            required placeholder="Product Name">
                                     </div>
 
                                     <div class="mb-3 text-center">
                                         <button class="btn btn-primary" type="submit">Update</button>
                                     </div>
-
                                 </form>
-
                             </div>
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal-dialog -->
@@ -433,6 +434,26 @@
 
         <!-- App js -->
         <script src="{{asset('js/app.min.js')}}"></script>
+
+        <script>
+            function editProduct(productId) {
+                // Make an AJAX request to fetch product data
+                $.ajax({
+                    url: `/admin/edit-product/${productId}`,
+                    type: 'GET',
+                    success: function (response) {
+                        // Populate the modal fields with the fetched data
+                        $('#pro_name').val(response.name);
+                        $('#updateProductForm').attr('action', `/admin/update-product/${productId}`);
+                        $('#signup-modal').modal('show');
+                    },
+                    error: function () {
+                        alert('Failed to fetch product data. Please try again.');
+                    }
+                });
+            }
+        </script>
+
 
 </body>
 

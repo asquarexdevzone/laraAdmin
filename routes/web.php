@@ -30,6 +30,8 @@ Route::get('/admin/dashboard', [AuthController::class, 'dashboard'])->name('admi
 Route::get('/admin/product-master', [ProductController::class, 'addProductView'])->name('add.productview');
 Route::post('/admin/add-product', [ProductController::class, 'addProduct'])->name('add.product');
 Route::get('/admin/delete-product/{id}', [ProductController::class, 'deleteProduct'])->name('delete.product');
+route::get('/admin/edit-product/{id}', [ProductController::class, 'editProduct'])->name('edit.product');
+Route::put('/admin/update-product/{id}', [ProductController::class, 'updateProduct'])->name('update.product');
 
 Route::get('/admin/color-master', [ColorController::class, 'addColorView'])->name('add.colorview');
 Route::post('/admin/add-color', [ColorController::class, 'addColor'])->name('add.color');

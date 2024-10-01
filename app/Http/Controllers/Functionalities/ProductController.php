@@ -40,4 +40,26 @@ class ProductController extends Controller
 
         return redirect()->route('add.productview')->with('success', 'Product deleted successfully.');
     }
+
+    public function editProduct($id)
+    {
+        $product = Product::find($id);
+        return response()->json($product); // Return product data as JSON
+    }
+
+    public function updateProduct(Request $request, $id)
+    {
+        $request->validate([
+            'ProductName' => 'required',
+        ]);
+
+        $product = Product::find($id);
+        $product->name = $request->ProductName;
+        $product->slug = Str::slug($request->ProductName);
+
+        $product->save();
+
+        return redirect()->route('add.productview')->with('success', 'Product updated successfully.');
+    }
+
 }
