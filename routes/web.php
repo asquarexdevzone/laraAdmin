@@ -44,6 +44,8 @@ Route::get('/admin/delete-size/{id}', [SizeController::class, 'deleteSizes'])->n
 Route::get('/admin/category-master', [CategoryController::class, 'addCategoryView'])->name('add.categoryview');
 Route::post('/admin/add-category', [CategoryController::class, 'addCategory'])->name('add.category');
 Route::get('/admin/delete-category/{id}', [CategoryController::class, 'deleteCategory'])->name('delete.category');
+route::get('/admin/edit-category/{id}', [CategoryController::class, 'editCategory'])->name('edit.category');
+Route::put('/admin/update-category/{id}', [CategoryController::class, 'updateCategory'])->name('update.category');
 
 Route::get('/admin/gallery-images', [GalleryImageController::class, 'addGalleryImagesView'])->name('add.gallery-images-view');
 Route::post('/admin/add-gallery-images', [GalleryImageController::class, 'addGalleryImages'])->name('add.gallery-images');

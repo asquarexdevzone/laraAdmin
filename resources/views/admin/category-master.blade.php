@@ -66,15 +66,14 @@
                                     <h4 class="header-title mb-0"> Add Category Here </h4>
                                 </div>
                                 <div class="card-body">
-                                    
+
                                     @if(session('success'))
-                                    <div id="alert-success" class="alert alert-success">
+                                        <div id="alert-success" class="alert alert-success">
                                             {{ session('success') }}
                                         </div>
                                     @endif
 
-                                    <form action="/admin/add-category" method="POST"
-                                        enctype="multipart/form-data">
+                                    <form action="/admin/add-category" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <div id="basicwizard">
                                             <div>
@@ -160,19 +159,21 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($categories as $category)
-                                            <tr>
-                                                <td>{{$category->id}}</td>
-                                                <td>{{$category->name}}</td>
-                                                <td>
-                                                    <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
-                                                            class="ri-settings-3-line"></i></a>
-                                                    <a href="/admin/delete-category/{{$category->id}}" class="text-reset fs-16 px-1"> <i
-                                                            class="ri-delete-bin-2-line"></i></a>
-                                                </td>
-                                            </tr>
+                                                <tr>
+                                                    <td>{{$category->id}}</td>
+                                                    <td>{{$category->name}}</td>
+                                                    <td>
+                                                        <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
+                                                                class="ri-settings-3-line" data-bs-toggle="modal"
+                                                                data-bs-target="#category-modal"></i></a>
+                                                        <a href="/admin/delete-category/{{$category->id}}"
+                                                            class="text-reset fs-16 px-1"> <i
+                                                                class="ri-delete-bin-2-line"></i></a>
+                                                    </td>
+                                                </tr>
 
                                             @endforeach
-                                            
+
                                         </tbody>
                                     </table>
                                 </div> <!-- end table-responsive-->
@@ -181,6 +182,48 @@
                     </div><!-- end col-->
                 </div> <!-- container -->
             </div> <!-- content -->
+
+            <div id="category-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <form id="updateProductForm" method="POST" action="#">
+                                @csrf
+                                @method('PUT')
+                                <div class="mb-3">
+                                    <label for="cat_name" class="form-label">Update Category Name </label>
+                                    <input class="form-control" type="text" id="cat_id" name="CategoryName" required
+                                        placeholder="Category Name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cat_name" class="form-label">Select Product To Update </label>
+                                    <div class="col-md-12">
+                                        <select class="form-select" id="ProductId" name="Product" required>
+                                            <option value="" disabled selected>Select product
+                                            </option>
+                                            @foreach ($products as $product)
+                                                <option value="{{ $product->id }}">
+                                                    {{ $product->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cat_name" class="form-label">Choose Category Image </label>
+                                    <div class="col-md-12">
+                                        <input type="file" id="image" class="form-control" name="image">
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 text-center">
+                                    <button class="btn btn-primary" type="submit">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
 
             <!-- Footer Start -->
             @include('admin.footer')
@@ -438,6 +481,25 @@
 
     <!-- App js -->
     <script src="{{asset('js/app.min.js')}}"></script>
+
+    <script>
+        function editCategory(categoryId) {
+            // Make an AJAX request to fetch product data
+            $.ajax({
+                url: `/admin/edit-category/${categoryId}`,
+                type: 'GET',
+                success: function (response) {
+                    // Populate the modal fields with the fetched data
+                    $('#pro_name').val(response.name);
+                    $('#updateProductForm').attr('action', `/admin/update-product/${categoryId}`);
+                    $('#signup-modal').modal('show');
+                },
+                error: function () {
+                    alert('Failed to fetch product data. Please try again.');
+                }
+            });
+        }
+    </script>
 
 </body>
 
