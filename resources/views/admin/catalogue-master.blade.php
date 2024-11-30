@@ -68,12 +68,13 @@
                                 <div class="card-body">
 
                                     @if(session('success'))
-                                    <div id="alert-success" class="alert alert-success">
+                                        <div id="alert-success" class="alert alert-success">
                                             {{ session('success') }}
                                         </div>
                                     @endif
 
-                                    <form action="{{ route('add.catalogue') }}" method="POST" enctype="multipart/form-data">
+                                    <form action="{{ route('add.catalogue') }}" method="POST"
+                                        enctype="multipart/form-data">
                                         @csrf
                                         <div id="basicwizard">
                                             <div>
@@ -173,7 +174,7 @@
 
                                                     </div> <!-- end col -->
                                                 </div> <!-- end row -->
-    
+
                                                 <ul class="list-inline wizard mb-0">
                                                     <li class="next list-inline-item float-end">
                                                         <button type="submit" class="btn btn-info">Add Catalogue <i
@@ -218,20 +219,24 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($catalogues as $catalogue)
-                                            <tr>
-                                                <td>{{ $catalogue->id }}</td>
-                                                <td>{{ $catalogue->name }}</td>
-                                                <td>{{ $catalogue->product_name }}</td>
-                                                <td>{{ $catalogue->category_name }}</td>
-                                                <td>{{ $catalogue->size_name }}</td>
-                                                <td><img src="{{ asset('images/catalogues_coverpages/' . $catalogue->image) }}" alt="image" class="img-fluid avatar-md rounded"></td>
-                                                <td>
-                                                    <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
-                                                            class="ri-settings-3-line"></i></a>
-                                                    <a href="/admin/delete-catalogue/{{ $catalogue->id }}" class="text-reset fs-16 px-1"> <i
-                                                            class="ri-delete-bin-2-line"></i></a>
-                                                </td>
-                                            </tr>
+                                                <tr>
+                                                    <td>{{ $catalogue->id }}</td>
+                                                    <td>{{ $catalogue->name }}</td>
+                                                    <td>{{ $catalogue->product_name }}</td>
+                                                    <td>{{ $catalogue->category_name }}</td>
+                                                    <td>{{ $catalogue->size_name }}</td>
+                                                    <td><img src="{{ asset('images/catalogues_coverpages/' . $catalogue->image) }}"
+                                                            alt="image" class="img-fluid avatar-md rounded"></td>
+                                                    <td>
+                                                        <a href="javascript:void(0);" class="text-reset fs-16 px-1"
+                                                            onclick="editCatalogue({{ $catalogue->id }})">
+                                                            <i class="ri-settings-3-line" data-bs-toggle="modal"
+                                                                data-bs-target="#catalogue-modal"></i></a>
+                                                        <a href="/admin/delete-catalogue/{{ $catalogue->id }}"
+                                                            class="text-reset fs-16 px-1"> <i
+                                                                class="ri-delete-bin-2-line"></i></a>
+                                                    </td>
+                                                </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -241,6 +246,96 @@
                     </div><!-- end col-->
                 </div> <!-- container -->
             </div> <!-- content -->
+
+            <div id="catalogue-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <form id="updateCatalogueForm" method="POST" action="#" enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
+                                <div class="mb-3">
+                                    <label for="catalogue_name" class="form-label">Update Catalogue Name </label>
+                                    <input class="form-control" type="text" id="catalogue_name" name="catalogueName"
+                                        required placeholder="Catalogue Name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cat_name" class="form-label">Select Product To Update </label>
+                                    <div class="col-md-12">
+                                        <select class="form-select" id="productId" name="productName" required>
+                                            <option value="" disabled selected>Select product
+                                            </option>
+                                            @foreach ($products as $product)
+                                                <option value="{{ $product->id }}">
+                                                    {{ $product->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cat_name" class="form-label">Select Category To Update </label>
+                                    <div class="col-md-12">
+                                        <select class="form-select" id="categoryId" name="categoryName" required>
+                                            <option value="" disabled selected>Select Category
+                                            </option>
+                                            @foreach ($categories as $category)
+                                                <option value="{{ $category->id }}">
+                                                    {{ $category->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cat_name" class="form-label">Select Size To Update </label>
+                                    <div class="col-md-12">
+                                        <select class="form-select" id="sizeId" name="sizeName" required>
+                                            <option value="" disabled selected>Select Size
+                                            </option>
+                                            @foreach ($sizes as $size)
+                                                <option value="{{ $size->id }}">
+                                                    {{ $size->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="catalogue_link" class="form-label">Update Catalogue Link </label>
+                                    <input class="form-control" type="text" id="catalogueLink" name="catalogueLink"
+                                        required placeholder="Catalogue Link">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cat_name" class="form-label">Choose Category Image </label>
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label">Current Image</label>
+                                        <input type="text" id="currentCoverPage" class="form-control" readonly>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label">Update Image</label>
+                                        <input class="form-control" type="file" id="image" name="update_coverpage">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cat_name" class="form-label">Choose Catalogue PDF </label>
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label">Current PDF</label>
+                                        <input type="text" id="currentPdf" class="form-control" readonly>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label">Update PDF</label>
+                                        <input class="form-control" type="file" id="image" name="update_pdf">
+                                    </div>
+                                </div>
+                                <div class="mb-3 text-center">
+                                    <button class="btn btn-primary" type="submit">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
 
             <!-- Footer Start -->
             @include('admin.footer')
@@ -498,6 +593,36 @@
 
     <!-- App js -->
     <script src="{{asset('js/app.min.js')}}"></script>
+
+    <script>
+        function editCatalogue(catalogueId) {
+            $.ajax({
+                url: `/admin/edit-catalogue/${catalogueId}`,
+                type: 'GET',
+                success: function (response) {
+                    if (response.catalogue) {
+                        // Populate modal fields with the fetched data
+                        $('#catalogue_name').val(response.catalogue.name);
+                        $('#productId').val(response.catalogue.product_id);
+                        $('#categoryId').val(response.catalogue.category_id);
+                        $('#sizeId').val(response.catalogue.size_id);
+                        $('#catalogueLink').val(response.catalogue.catalogue_link);
+                        $('#updateCatalogueForm').attr('action', `/admin/update-catalogue/${catalogueId}`);
+                        $('#currentCoverPage').val(response.catalogue.image);
+                        $('#currentPdf').val(response.catalogue.catalogue_pdf);
+                        // Show the modal
+                        $('#catalogue-modal').modal('show');
+                    } else {
+                        alert('Failed to fetch Catalogue data. Catalogue not found.');
+                    }
+                },
+                error: function () {
+                    alert('Failed to fetch Catalogue data. Please try again.');
+                }
+            });
+        }
+
+    </script>
 
 </body>
 

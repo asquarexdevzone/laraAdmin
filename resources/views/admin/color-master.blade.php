@@ -133,10 +133,13 @@
                                                     <td>{{ $color->id }}</td>
                                                     <td>{{ $color->name }}</td>
                                                     <td>
-                                                        <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
-                                                                class="ri-settings-3-line"></i></a>
-                                                        <a href="/admin/delete-color/{{ $color->id }}" class="text-reset fs-16 px-1"> <i
-                                                                class="ri-delete-bin-2-line"></i></a>
+                                                        <a href="javascript:void(0);" class="text-reset fs-16 px-1"
+                                                            onclick="editcolor({{ $color->id }})">
+                                                            <i class="ri-settings-3-line" data-bs-toggle="modal"
+                                                                data-bs-target="#color-modal"></i></a>
+                                                            <a href="/admin/delete-color/{{ $color->id }}"
+                                                                class="text-reset fs-16 px-1"> <i
+                                                                    class="ri-delete-bin-2-line"></i></a>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -148,7 +151,27 @@
                     </div><!-- end col-->
                 </div> <!-- container -->
             </div> <!-- content -->
-
+            <!-- Signup modal content -->
+            <div id="color-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <form id="updateColorForm" method="POST" action="#">
+                                @csrf
+                                @method('PUT')
+                                <div class="mb-3">
+                                    <label for="color_name" class="form-label">Update Color Name</label>
+                                    <input class="form-control" type="text" id="color_name" name="ColorName" required
+                                        placeholder="Color Name">
+                                </div>
+                                <div class="mb-3 text-center">
+                                    <button class="btn btn-primary" type="submit">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
             <!-- Footer Start -->
             @include('admin.footer')
             <!-- end Footer -->
@@ -405,6 +428,25 @@
 
     <!-- App js -->
     <script src="{{asset('js/app.min.js')}}"></script>
+
+    <script>
+        function editcolor(colorId) {
+            // Make an AJAX request to fetch color data
+            $.ajax({
+                url: `/admin/edit-color/${colorId}`,
+                type: 'GET',
+                success: function (response) {
+                    // Populate the modal fields with the fetched data
+                    $('#color_name').val(response.name);
+                    $('#updateColorForm').attr('action', `/admin/update-color/${colorId}`);
+                    $('#color-modal').modal('show');
+                },
+                error: function () {
+                    alert('Failed to fetch color data. Please try again.');
+                }
+            });
+        }
+    </script>
 
 </body>
 

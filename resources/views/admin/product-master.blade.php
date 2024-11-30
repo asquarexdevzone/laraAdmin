@@ -168,7 +168,6 @@
                                         <input class="form-control" type="text" id="pro_name" name="ProductName"
                                             required placeholder="Product Name">
                                     </div>
-
                                     <div class="mb-3 text-center">
                                         <button class="btn btn-primary" type="submit">Update</button>
                                     </div>
@@ -453,8 +452,6 @@
                 });
             }
         </script>
-
-
 </body>
 
 </html>

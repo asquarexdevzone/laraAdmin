@@ -13,7 +13,7 @@ class ColorController extends Controller
     public function addColorView()
     {
         $color = color::all();
-        return view('admin.color-master',['colors'  => $color]);
+        return view('admin.color-master', ['colors' => $color]);
     }
 
     public function addColor(Request $request)
@@ -21,7 +21,7 @@ class ColorController extends Controller
         $request->validate([
             'ColorName' => 'required',
         ]);
-        
+
         $colorname = $request->input('ColorName');
         $slug = Str::slug($colorname);
 
@@ -34,7 +34,29 @@ class ColorController extends Controller
         return redirect()->route('add.colorview')->with('success', 'Color added successfully.');
     }
 
-    public function deleteColor($id){
+    public function editColor($id)
+    {
+        $color = color::find($id);
+        return response()->json($color); // Return color data as JSON
+    }
+
+    public function updateColor(Request $request, $id)
+    {
+        $request->validate([
+            'ColorName' => 'required',
+        ]);
+
+        $color = color::find($id);
+        $color->name = $request->ColorName;
+        $color->slug = Str::slug($request->ColorName);
+
+        $color->save();
+
+        return redirect()->route('add.colorview')->with('success', 'Color updated successfully.');
+    }
+
+    public function deleteColor($id)
+    {
         $delete_color = DB::table('colors')->where('id', $id)->delete();
 
         return redirect()->route('add.colorview')->with('success', 'Color deleted successfully.');

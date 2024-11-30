@@ -125,12 +125,11 @@
                                                     <tr>
                                                         <td>{{ $image->id }}</td>
                                                         <td>{{ $image->filename }}</td>
-                                                        <td><img src="{{ asset('images/gallery-images/' . $image->filename) }}" alt="image"
-                                                                class="img-fluid avatar-md rounded"></td>
+                                                        <td><img src="{{ asset('images/gallery-images/' . $image->filename) }}"
+                                                                alt="image" class="img-fluid avatar-md rounded"></td>
                                                         <td>
-                                                            <a href="javascript: void(0);" class="text-reset fs-16 px-1">
-                                                                <i class="ri-settings-3-line"></i></a>
-                                                            <a href="/admin/delete-gallery-image/{{$image->id}}" class="text-reset fs-16 px-1">
+                                                            <a href="/admin/delete-gallery-image/{{$image->id}}"
+                                                                class="text-reset fs-16 px-1">
                                                                 <i class="ri-delete-bin-2-line"></i></a>
                                                         </td>
                                                     </tr>

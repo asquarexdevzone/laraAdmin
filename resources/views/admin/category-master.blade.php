@@ -131,8 +131,6 @@
                                         </div> <!-- tab-content -->
                                 </div> <!-- end #basicwizard-->
                                 </form>
-
-
                             </div> <!-- end card-body -->
                         </div> <!-- end card-->
                     </div> <!-- end col -->
@@ -154,6 +152,8 @@
                                             <tr>
                                                 <th>Category ID</th>
                                                 <th>Category Name</th>
+                                                <th>Product Name</th>
+                                                <th>Category Image</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -162,18 +162,20 @@
                                                 <tr>
                                                     <td>{{$category->id}}</td>
                                                     <td>{{$category->name}}</td>
+                                                    <td>{{$category->product_name}}</td>
+                                                    <td><img src="{{ asset('images/cat-images/' . $category->image) }}"
+                                                            alt="image" class="img-fluid avatar-md rounded"></td>
                                                     <td>
-                                                        <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
-                                                                class="ri-settings-3-line" data-bs-toggle="modal"
+                                                        <a href="javascript:void(0);" class="text-reset fs-16 px-1"
+                                                            onclick="editCategory({{ $category->id }})">
+                                                            <i class="ri-settings-3-line" data-bs-toggle="modal"
                                                                 data-bs-target="#category-modal"></i></a>
                                                         <a href="/admin/delete-category/{{$category->id}}"
                                                             class="text-reset fs-16 px-1"> <i
                                                                 class="ri-delete-bin-2-line"></i></a>
                                                     </td>
                                                 </tr>
-
                                             @endforeach
-
                                         </tbody>
                                     </table>
                                 </div> <!-- end table-responsive-->
@@ -187,13 +189,13 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-body">
-                            <form id="updateProductForm" method="POST" action="#">
+                            <form id="updateCategoryForm" method="POST" action="#" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="mb-3">
                                     <label for="cat_name" class="form-label">Update Category Name </label>
-                                    <input class="form-control" type="text" id="cat_id" name="CategoryName" required
-                                        placeholder="Category Name">
+                                    <input class="form-control" type="text" id="category_name" name="CategoryName"
+                                        required placeholder="Category Name">
                                 </div>
                                 <div class="mb-3">
                                     <label for="cat_name" class="form-label">Select Product To Update </label>
@@ -211,11 +213,15 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="cat_name" class="form-label">Choose Category Image </label>
-                                    <div class="col-md-12">
-                                        <input type="file" id="image" class="form-control" name="image">
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label">Current Image</label>
+                                        <input type="text" id="current_image_name" class="form-control" readonly>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label">Update Image</label>
+                                        <input class="form-control" type="file" id="image" name="image">
                                     </div>
                                 </div>
-
                                 <div class="mb-3 text-center">
                                     <button class="btn btn-primary" type="submit">Update</button>
                                 </div>
@@ -484,18 +490,23 @@
 
     <script>
         function editCategory(categoryId) {
-            // Make an AJAX request to fetch product data
+            // Make an AJAX request to fetch category data
             $.ajax({
                 url: `/admin/edit-category/${categoryId}`,
                 type: 'GET',
                 success: function (response) {
-                    // Populate the modal fields with the fetched data
-                    $('#pro_name').val(response.name);
-                    $('#updateProductForm').attr('action', `/admin/update-product/${categoryId}`);
-                    $('#signup-modal').modal('show');
+                    // Populate modal fields with the fetched data
+                    $('#category_name').val(response.category.name);
+                    $('#ProductId').val(response.category.product_id);
+                    $('#updateCategoryForm').attr('action', `/admin/update-category/${categoryId}`);
+                    // Set the image name in the text field
+                    $('#current_image_name').val(response.category.image);
+
+                    // Show the modal
+                    $('#category-modal').modal('show');
                 },
                 error: function () {
-                    alert('Failed to fetch product data. Please try again.');
+                    alert('Failed to fetch category data. Please try again.');
                 }
             });
         }

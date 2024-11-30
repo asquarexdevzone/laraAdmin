@@ -59,7 +59,60 @@ class CatalogueController extends Controller
         return redirect()->route('add.catalogueview')->with('success', 'Catalogue added successfully.');
     }
 
-    public function deleteCatalogue($id){
+    public function editCatalogue($id)
+    {
+        // Find the Catalogue by its ID
+        $catalogue = catalogue::find($id);
+
+        if (!$catalogue) {
+            return response()->json(['error' => 'Catalogue not found.'], 404);
+        }
+
+        // Fetch all products and sizes for the dropdowns
+        $products = Product::all();
+        $categories = Category::all();
+        $sizes = size_master::all();
+
+        // Return data as JSON
+        return response()->json([
+            'catalogue' => $catalogue,
+            'products' => $products,
+            'categories' => $categories,
+            'sizes' => $sizes
+        ]);
+    }
+
+    public function updateCatalogue(Request $request, $id)
+    {
+        $catalogue = catalogue::find($id);
+        $catalogue->name = $request->catalogueName;
+        $catalogue->product_id = $request->productName;
+        $catalogue->category_id = $request->categoryName;
+        $catalogue->size_id = $request->sizeName;
+        $catalogue->catalogue_link = $request->catalogueLink;
+
+        if ($request->hasFile('update_coverpage')) {
+            $file = $request->file('update_coverpage');
+            $filename = time() . '-' . Str::slug($request->catalogue_name) . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('images/catalogues_coverpages'), $filename);
+            $catalogue->image = $filename;
+        }
+
+        if ($request->hasFile('update_pdf')) {
+            $pdf = $request->file('update_pdf');
+            $pdfFilename = time() . '-' . Str::slug($request->catalogue_name) . '.' . $pdf->getClientOriginalExtension();
+            $pdf->move(public_path('pdfs/catalogues_pdfs'), $pdfFilename);
+            $catalogue->catalogue_pdf = $pdfFilename;
+        }
+
+        $catalogue->save();
+
+        return redirect()->route('add.catalogueview')->with('success', 'Catalogue updated successfully.');
+    }
+
+
+    public function deleteCatalogue($id)
+    {
         $delete_catalogue = DB::table('catalogues')->where('id', $id)->delete();
         return redirect()->route('add.catalogueview')->with('success', 'Catalogue deleted successfully.');
     }

@@ -38,7 +38,53 @@ class BlogController extends Controller
         return redirect()->route('add.Blogview')->with('success', 'Blog added successfully.');
     }
 
-    public function deleteBlog($id){
+    public function editBlog($id)
+    {
+        $blog = Blog::find($id);
+        return response()->json($blog); // Return blog data as JSON
+    }
+
+    public function updateBlog(Request $request, $id)
+    {
+        // Validate the incoming data
+        $request->validate([
+            'blogName' => 'required',
+            'update_blog_description' => 'required',
+            'new_image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', // Optional, if the user uploads a new image
+        ]);
+
+        // Find the blog by ID
+        $blog = Blog::findOrFail($id);
+
+        // Update blog title and description
+        $blog->title = $request->input('blogName');
+        $blog->description = $request->input('update_blog_description');
+
+        // Handle image upload if a new image is provided
+        if ($request->hasFile('new_image')) {
+            // Delete old image if exists
+            if ($blog->image && file_exists(public_path('images/blog-images' . $blog->image))) {
+                unlink(public_path('images/blog-images' . $blog->image));
+            }
+
+            // Store the new image
+            $image = $request->file('new_image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/blog-images'), $imageName);
+
+            // Update image name in the database
+            $blog->image = $imageName;
+        }
+
+        // Save the updated blog data
+        $blog->save();
+
+        // Redirect or return response
+        return redirect()->route('add.Blogview')->with('success', 'Blog Updated successfully.');
+    }
+
+    public function deleteBlog($id)
+    {
         $delete_blog = DB::table('blogs')->where('id', $id)->delete();
         return redirect()->route('add.Blogview')->with('success', 'Blog deleted successfully.');
     }

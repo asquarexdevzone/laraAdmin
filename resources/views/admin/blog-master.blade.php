@@ -5,7 +5,19 @@
     <title>Add Your Blog Here | LaravelAdmin</title>
     @include('admin.include')
 
-    <!-- <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" /> -->
+    <!-- Datatables css -->
+    <link href="{{asset('vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{asset('vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css')}}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{asset('vendor/datatables.net-fixedcolumns-bs5/css/fixedColumns.bootstrap5.min.css')}}"
+        rel="stylesheet" type="text/css" />
+    <link href="{{asset('vendor/datatables.net-fixedheader-bs5/css/fixedHeader.bootstrap5.min.css')}}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{asset('vendor/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css')}}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{asset('vendor/datatables.net-select-bs5/css/select.bootstrap5.min.css')}}" rel="stylesheet"
+        type="text/css" />
 
     <!-- Quill css -->
     <link href="{{asset('vendor/quill/quill.core.css')}}" rel="stylesheet" type="text/css" />
@@ -67,7 +79,8 @@
                                             {{ session('success') }}
                                         </div>
                                     @endif
-                                    <form action="/admin/add-blog" method="POST" id="blogForm">
+                                    <form action="/admin/add-blog" method="POST" id="blogForm"
+                                        enctype="multipart/form-data">
                                         @csrf
                                         <div id="basicwizard">
                                             <div>
@@ -102,10 +115,9 @@
                                                                     <ul class="list-group list-group-flush">
                                                                         <li class="list-group-item">
                                                                             <div class="mb-2">
-                                                                                <div id="snow-editor"
+                                                                                <div id="snow-editor-1"
                                                                                     style="height: 300px;"
-                                                                                    name="blog_description">
-                                                                                </div><!-- end Snow-editor-->
+                                                                                    name="blog_description"></div>
                                                                                 <input type="hidden"
                                                                                     name="blog_description"
                                                                                     id="blogDescription">
@@ -113,19 +125,20 @@
                                                                         </li>
                                                                     </ul>
                                                                 </div>
-                                                            </div> <!-- end row -->
-                                                            <ul class="list-inline wizard mb-0">
-                                                                <li class="next list-inline-item float-end">
-                                                                    <button type="submit" class="btn btn-info">Add Blog
-                                                                        <i class="ri-check-line ms-1"></i></button>
-                                                                    <a href="javascript:void(0);"
-                                                                        class="btn btn-danger">Cancel<i
-                                                                            class="ri-close-fill ms-1"></i></a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div> <!-- tab-content -->
-                                                </div> <!-- end #basicwizard-->
+                                                            </div>
+                                                        </div> <!-- end row -->
+                                                        <ul class="list-inline wizard mb-0">
+                                                            <li class="next list-inline-item float-end">
+                                                                <button type="submit" class="btn btn-info">Add Blog
+                                                                    <i class="ri-check-line ms-1"></i></button>
+                                                                <a href="javascript:void(0);"
+                                                                    class="btn btn-danger">Cancel<i
+                                                                        class="ri-close-fill ms-1"></i></a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div> <!-- tab-content -->
+                                            </div> <!-- end #basicwizard-->
                                     </form>
                                 </div> <!-- end card-body -->
                             </div> <!-- end card-->
@@ -149,6 +162,7 @@
                                                 <tr>
                                                     <th>Blog ID</th>
                                                     <th>Blog Name</th>
+                                                    <th>Blog Image</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -157,10 +171,17 @@
                                                     <tr>
                                                         <td>{{$blog->id}}</td>
                                                         <td>{{$blog->title}}</td>
+                                                        <td><img src="{{ asset('images/blog-images/' . $blog->image) }}"
+                                                                alt="image" class="img-fluid avatar-md rounded"></td>
+                                                        </td>
                                                         <td>
-                                                            <a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i
-                                                                    class="ri-settings-3-line"></i></a>
-                                                            <a href="/admin/delete-blog/{{$blog->id}}" class="text-reset fs-16 px-1"> <i
+                                                            <a href="javascript:void(0);" class="text-reset fs-16 px-1"
+                                                                onclick="editBlog({{ $blog->id }})">
+                                                                <i class="ri-settings-3-line" data-bs-toggle="modal"
+                                                                    data-bs-target="#color-modal"></i></a>
+
+                                                            <a href="/admin/delete-blog/{{$blog->id}}"
+                                                                class="text-reset fs-16 px-1"> <i
                                                                     class="ri-delete-bin-2-line"></i></a>
                                                         </td>
                                                     </tr>
@@ -173,6 +194,52 @@
                         </div><!-- end col-->
                     </div> <!-- container -->
                 </div> <!-- content -->
+
+                <!-- Signup modal content -->
+                <div id="blog-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-full-width">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <form id="updateBlogForm" method="POST" action="#" enctype="multipart/form-data">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="mb-3">
+                                        <label for="blog_name" class="form-label">Update Blog Name</label>
+                                        <input class="form-control" type="text" id="blog_name" name="blogName" required
+                                            placeholder="Blog Name">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="current_image_name" class="form-label">Choose Blog Image </label>
+                                        <div class="mb-3">
+                                            <label for="image" class="form-label">Current Image</label>
+                                            <input type="text" id="current_image_name" class="form-control" readonly>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="new_image" class="form-label">Update Image</label>
+                                            <input class="form-control" type="file" id="new_image" name="new_image">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="blog_name" class="form-label">Update Blog Description</label>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">
+                                                <div class="mb-2">
+                                                    <div id="snow-editor-2" style="height: 300px;"
+                                                        name="update_blog_description"></div>
+                                                    <input type="hidden" name="update_blog_description"
+                                                        id="updateBlogDescription">
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="mb-3 text-center">
+                                        <button class="btn btn-primary" type="submit">Update</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
 
                 <!-- Footer Start -->
                 @include('admin.footer')
@@ -425,10 +492,11 @@
         <script src="{{asset('vendor/datatables.net-keytable/js/dataTables.keyTable.min.js')}}"></script>
         <script src="{{asset('vendor/datatables.net-select/js/dataTables.select.min.js')}}"></script>
 
+        <!-- Datatable Demo Aapp js -->
+        <script src="{{asset('js/pages/datatable.init.js')}}"></script>
+
         <!-- App js -->
         <script src="{{asset('js/app.min.js')}}"></script>
-
-        <!-- <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script> -->
 
         <!-- Quill Editor js -->
         <script src="{{asset('vendor/quill/quill.min.js')}}"></script>
@@ -438,12 +506,56 @@
 
         <!-- Initialize Quill editor -->
         <script>
-
             $("#blogForm").on("submit", function () {
-                var myEditor = document.querySelector('#snow-editor')
+                var myEditor = document.querySelector('#snow-editor-1')
                 var html = myEditor.children[0].innerHTML
                 $('#blogDescription').val(html)
             })
+
+            // Synchronize Quill content before submitting the update form
+            $("#updateBlogForm").on("submit", function () {
+                const quillEditor = document.querySelector('#snow-editor-2').quillInstance;
+                if (quillEditor) {
+                    // Get Quill content and set it to the hidden input field
+                    const html = quillEditor.root.innerHTML;
+                    $('#updateBlogDescription').val(html);
+                }
+            });
+
+        </script>
+
+        <script>
+            function editBlog(blogId) {
+                // Make an AJAX request to fetch blog data
+                $.ajax({
+                    url: `/admin/edit-blog/${blogId}`,
+                    type: 'GET',
+                    success: function (response) {
+                        // Populate the modal fields with the fetched data
+                        $('#blog_name').val(response.title);
+                        $('#current_image_name').val(response.image);
+
+                        // Access the Quill instance for #snow-editor-2 and set its content
+                        const quillEditor = document.querySelector('#snow-editor-2').quillInstance;
+                        if (quillEditor) {
+                            quillEditor.root.innerHTML = response.description;
+                        } else {
+                            console.error('Quill instance for #snow-editor-2 not found.');
+                        }
+
+                        // Set the form action URL to update the blog
+                        $('#updateBlogForm').attr('action', `/admin/update-blog/${blogId}`);
+
+                        // Show the modal
+                        $('#blog-modal').modal('show');
+                    },
+                    error: function () {
+                        alert('Failed to fetch blog data. Please try again.');
+                    }
+                });
+            }
+
+
         </script>
 
 </body>
