@@ -129,7 +129,7 @@
                                                                 alt="image" class="img-fluid avatar-md rounded"></td>
                                                         <td>
                                                             <a href="/admin/delete-gallery-image/{{$image->id}}"
-                                                                class="text-reset fs-16 px-1">
+                                                                class="text-reset fs-16 px-1" onclick="return confirm('Are you sure you want to delete this gallery image?');">
                                                                 <i class="ri-delete-bin-2-line"></i></a>
                                                         </td>
                                                     </tr>

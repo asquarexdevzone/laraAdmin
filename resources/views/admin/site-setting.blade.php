@@ -17,6 +17,11 @@
         type="text/css" />
     <link href="{{asset('vendor/datatables.net-select-bs5/css/select.bootstrap5.min.css')}}" rel="stylesheet"
         type="text/css" />
+        <!-- Dropzone CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.css" rel="stylesheet">
+
+    <!-- Dropzone JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
 </head>
 
 <body>
@@ -49,11 +54,11 @@
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
                                         <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
-                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Product Master</a>
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Site Setting Master</a>
                                         </li>
                                     </ol>
                                 </div>
-                                <h4 class="page-title">Product Master</h4>
+                                <h4 class="page-title">Site Setting Master</h4>
                             </div>
                         </div>
                     </div>
@@ -63,7 +68,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="header-title mb-0"> Add Main Product Here </h4>
+                                    <h4 class="header-title mb-0"> Site Setting </h4>
                                 </div>
                                 <div class="card-body">
                                     @if(session('success'))
@@ -71,28 +76,121 @@
                                             {{ session('success') }}
                                         </div>
                                     @endif
-                                    <form action="/admin/add-product" method="POST">
+                                    <form
+                                        action="{{ isset($siteSetting->id) ? url('/admin/update-site-setting/' . $siteSetting->id) : url('/admin/store-site-setting') }}"
+                                        method="POST">
                                         @csrf
                                         <div id="basicwizard">
                                             <div>
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="row mb-3">
-                                                            <label class="col-md-3 col-form-label" for="product">Product
-                                                                Name :</label>
+                                                            <label class="col-md-3 col-form-label"
+                                                                for="CompanyName">Company Name:</label>
                                                             <div class="col-md-9">
-                                                                <input type="text" class="form-control" id="ProductName"
-                                                                    name="ProductName" placeholder="Enter Product Name"
-                                                                    required>
+                                                                <input type="text" class="form-control" id="CompanyName"
+                                                                    name="company_name"
+                                                                    value="{{ old('company_name', $siteSetting->company_name ?? '') }}"
+                                                                    placeholder="Enter Company Name" required>
                                                             </div>
                                                         </div>
+
+                                                        <div class="row mb-3">
+                                                            <label class="col-md-3 col-form-label" for="MobileNo">Mobile
+                                                                No:</label>
+                                                            <div class="col-md-9">
+                                                                <input type="text" class="form-control" id="MobileNo"
+                                                                    name="mobile_no"
+                                                                    value="{{ old('mobile_no', $siteSetting->mobile_no ?? '') }}"
+                                                                    placeholder="Enter Mobile Number" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mb-3">
+                                                            <label class="col-md-3 col-form-label" for="EmailID">Email
+                                                                ID:</label>
+                                                            <div class="col-md-9">
+                                                                <input type="email" class="form-control" id="EmailID"
+                                                                    name="email_id"
+                                                                    value="{{ old('email_id', $siteSetting->email_id ?? '') }}"
+                                                                    placeholder="Enter Email Address" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mb-3">
+                                                            <label class="col-md-3 col-form-label" for="Website">Website
+                                                                Link:</label>
+                                                            <div class="col-md-9">
+                                                                <input type="url" class="form-control" id="Website"
+                                                                    name="website"
+                                                                    value="{{ old('website', $siteSetting->website ?? '') }}"
+                                                                    placeholder="https://example.com">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mb-3">
+                                                            <label class="col-md-3 col-form-label"
+                                                                for="Facebook">Facebook:</label>
+                                                            <div class="col-md-9">
+                                                                <input type="url" class="form-control" id="Facebook"
+                                                                    name="facebook"
+                                                                    value="{{ old('facebook', $siteSetting->facebook ?? '') }}"
+                                                                    placeholder="Facebook Profile/Page URL">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mb-3">
+                                                            <label class="col-md-3 col-form-label"
+                                                                for="Twitter">Twitter:</label>
+                                                            <div class="col-md-9">
+                                                                <input type="url" class="form-control" id="Twitter"
+                                                                    name="twitter"
+                                                                    value="{{ old('twitter', $siteSetting->twitter ?? '') }}"
+                                                                    placeholder="Twitter Profile URL">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mb-3">
+                                                            <label class="col-md-3 col-form-label"
+                                                                for="LinkedIn">LinkedIn:</label>
+                                                            <div class="col-md-9">
+                                                                <input type="url" class="form-control" id="LinkedIn"
+                                                                    name="linkedin"
+                                                                    value="{{ old('linkedin', $siteSetting->linkedin ?? '') }}"
+                                                                    placeholder="LinkedIn Profile/Page URL">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mb-3">
+                                                            <label class="col-md-3 col-form-label"
+                                                                for="Pinterest">Pinterest:</label>
+                                                            <div class="col-md-9">
+                                                                <input type="url" class="form-control" id="Pinterest"
+                                                                    name="pinterest"
+                                                                    value="{{ old('pinterest', $siteSetting->pinterest ?? '') }}"
+                                                                    placeholder="Pinterest Profile URL">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mb-3">
+                                                            <label class="col-md-3 col-form-label"
+                                                                for="WhatsApp">WhatsApp:</label>
+                                                            <div class="col-md-9">
+                                                                <input type="text" class="form-control" id="WhatsApp"
+                                                                    name="whatsapp"
+                                                                    value="{{ old('whatsapp', $siteSetting->whatsapp ?? '') }}"
+                                                                    placeholder="WhatsApp Number">
+                                                            </div>
+                                                        </div>
+
                                                     </div> <!-- end col -->
                                                 </div> <!-- end row -->
 
                                                 <ul class="list-inline wizard mb-0">
                                                     <li class="next list-inline-item float-end">
-                                                        <button type="submit" class="btn btn-info">Add Product <i
-                                                                class="ri-check-line ms-1"></i></button>
+                                                        <button type="submit"
+                                                            class="btn btn-info">{{ isset($siteSetting) ? 'Update' : 'Add' }}
+                                                            Site Setting <i class="ri-check-line ms-1"></i></button>
                                                         <a href="javascript:void(0);" class="btn btn-danger">Cancel<i
                                                                 class="ri-close-fill ms-1"></i></a>
                                                     </li>
@@ -107,92 +205,13 @@
                         </div> <!-- end card-->
                     </div> <!-- end col -->
                 </div><!-- end row -->
-
-                <div class="row">
-                    <div class="col-xl-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="header-title">Your Added Products</h4>
-                                <p class="text-muted mb-0">
-                                    Play With Your Products 😉
-                                </p>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive-sm">
-                                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
-                                        <thead>
-                                            <tr>
-                                                <th>Product ID</th>
-                                                <th>Product Name</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($products as $product)
-                                                <tr>
-                                                    <td>{{ $product->id }}</td>
-                                                    <td>{{ $product->name }}</td>
-                                                    <td>
-                                                        <a href="javascript:void(0);" class="text-reset fs-16 px-1"
-                                                            onclick="editProduct({{ $product->id }})">
-                                                            <i class="ri-settings-3-line" data-bs-toggle="modal"
-                                                                data-bs-target="#product-modal"></i>
-                                                        </a>
-                                                        <a href="/admin/delete-product/{{$product->id}}"
-                                                            class="text-reset fs-16 px-1"
-                                                            onclick="return confirm('Are you sure you want to delete this product?');">
-                                                            <i class="ri-delete-bin-2-line"></i>
-                                                        </a>
-
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div> <!-- end table-responsive-->
-                            </div> <!-- end card body-->
-                        </div> <!-- end card -->
-                    </div><!-- end col-->
-                </div> <!-- container -->
-            </div> <!-- content -->
-
-            <div class="card-body">
-                <!-- Signup modal content -->
-                <div id="product-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <form id="updateProductForm" method="POST" action="#">
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="mb-3">
-                                        <label for="pro_name" class="form-label">Update Product Name</label>
-                                        <input class="form-control" type="text" id="pro_name" name="ProductName"
-                                            required placeholder="Product Name">
-                                    </div>
-                                    <div class="mb-3 text-center">
-                                        <button class="btn btn-primary" type="submit">Update</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
-
                 <!-- Footer Start -->
                 @include('admin.footer')
                 <!-- end Footer -->
             </div>
-
-            <!-- ============================================================== -->
-            <!-- End Page content -->
-            <!-- ============================================================== -->
-
-
         </div>
-        <!-- END wrapper -->
-
-        <!-- Theme Settings -->
+    </div>
+            <!-- Theme Settings -->
         <div class="offcanvas offcanvas-end" tabindex="-1" id="theme-settings-offcanvas">
             <div class="d-flex align-items-center bg-primary p-3 offcanvas-header">
                 <h5 class="text-white m-0">Theme Settings</h5>
@@ -435,25 +454,6 @@
 
         <!-- App js -->
         <script src="{{asset('js/app.min.js')}}"></script>
-
-        <script>
-            function editProduct(productId) {
-                // Make an AJAX request to fetch product data
-                $.ajax({
-                    url: `/admin/edit-product/${productId}`,
-                    type: 'GET',
-                    success: function (response) {
-                        // Populate the modal fields with the fetched data
-                        $('#pro_name').val(response.name);
-                        $('#updateProductForm').attr('action', `/admin/update-product/${productId}`);
-                        $('#signup-modal').modal('show');
-                    },
-                    error: function () {
-                        alert('Failed to fetch product data. Please try again.');
-                    }
-                });
-            }
-        </script>
 </body>
 
 </html>

@@ -85,8 +85,22 @@ class BlogController extends Controller
 
     public function deleteBlog($id)
     {
-        $delete_blog = DB::table('blogs')->where('id', $id)->delete();
+        $blog = Blog::find($id); // Use Eloquent instead of raw query
+
+        if (!$blog) {
+            return redirect()->route('add.Blogview')->with('error', 'Blog not found.');
+        }
+
+        // Delete the image file if it exists
+        if ($blog->image && file_exists(public_path('images/blog-images/' . $blog->image))) {
+            unlink(public_path('images/blog-images/' . $blog->image));
+        }
+
+        // Delete the blog record
+        $blog->delete();
+
         return redirect()->route('add.Blogview')->with('success', 'Blog deleted successfully.');
     }
+
 
 }

@@ -54,10 +54,23 @@ class CategoryController extends Controller
 
     public function deleteCategory($id)
     {
-        $delete_category = DB::table('categories')->where('id', $id)->delete();
+        $category = Category::find($id); // Use Eloquent for clarity
+
+        if (!$category) {
+            return redirect()->route('add.categoryview')->with('error', 'Category not found.');
+        }
+
+        // Delete the image file if it exists
+        if ($category->image && file_exists(public_path('images/cat-images/' . $category->image))) {
+            unlink(public_path('images/cat-images/' . $category->image));
+        }
+
+        // Delete the database record
+        $category->delete();
 
         return redirect()->route('add.categoryview')->with('success', 'Category deleted successfully.');
     }
+
 
     // Fetch category details by ID
     public function editCategory($id)

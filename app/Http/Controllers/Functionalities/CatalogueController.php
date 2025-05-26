@@ -113,7 +113,26 @@ class CatalogueController extends Controller
 
     public function deleteCatalogue($id)
     {
-        $delete_catalogue = DB::table('catalogues')->where('id', $id)->delete();
-        return redirect()->route('add.catalogueview')->with('success', 'Catalogue deleted successfully.');
+        $catalogue = catalogue::find($id);
+        if (!$catalogue) {
+            return redirect()->back()->with('error', 'Catalogue not found.');
+        }
+
+        // Delete image file if exists
+        if ($catalogue->image && file_exists(public_path('images/catalogues_coverpages/' . $catalogue->image))) {
+            unlink(public_path('images/catalogues_coverpages/' . $catalogue->image));
+        }
+
+        // Delete pdf file if exists
+        if ($catalogue->catalogue_pdf && file_exists(public_path('pdfs/catalogues_pdfs/' . $catalogue->catalogue_pdf))) {
+            unlink(public_path('pdfs/catalogues_pdfs/' . $catalogue->catalogue_pdf));
+        }
+
+        // Delete the database record
+        $catalogue->delete();
+
+        return redirect()->route('add.catalogueview')->with('success', 'Catalogue added successfully.');
+    
     }
+
 }

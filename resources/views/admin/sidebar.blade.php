@@ -1,22 +1,26 @@
 <div class="leftside-menu">
 
+    @php
+        $logoPath = auth()->user()->logo ? asset('uploads/logos/' . auth()->user()->logo) : asset('images/asquarex-logo.png');
+    @endphp
+
     <!-- Brand Logo Light -->
-    <a href="{{'/admin/dashboard'}}" class="logo logo-light">
+    <a href="{{ url('/admin/dashboard') }}" class="logo logo-light">
         <span class="logo-lg">
-            <img src="{{asset('images/asquarex-logo.png')}}" alt="logo">
+            <img src="{{ $logoPath }}" alt="logo">
         </span>
         <span class="logo-sm">
-            <img src="{{asset('images/asquarex-logo.png')}}" alt="small logo">
+            <img src="{{ $logoPath }}" alt="small logo">
         </span>
     </a>
 
     <!-- Brand Logo Dark -->
-    <a href="{{'/admin/dashboard'}}" class="logo logo-dark">
+    <a href="{{ url('/admin/dashboard') }}" class="logo logo-dark">
         <span class="logo-lg">
-            <img src="{{asset('images/asquarex-logo.png')}}" alt="dark logo">
+            <img src="{{ $logoPath }}" alt="dark logo">
         </span>
         <span class="logo-sm">
-            <img src="{{asset('images/asquarex-logo.png')}}" alt="small logo">
+            <img src="{{ $logoPath }}" alt="small logo">
         </span>
     </a>
 
@@ -90,6 +94,15 @@
                     class="side-nav-link">
                     <i class="ri-table-line"></i>
                     <span> Gallery Images </span>
+
+                </a>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="{{'/admin/site-setting'}}" aria-expanded="false" aria-controls="sidebarForms"
+                    class="side-nav-link">
+                    <i class="ri-table-line"></i>
+                    <span> Site Setting </span>
 
                 </a>
             </li>

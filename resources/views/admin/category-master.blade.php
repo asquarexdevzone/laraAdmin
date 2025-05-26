@@ -112,7 +112,7 @@
                                                                 Image :</label>
                                                             <div class="col-md-9">
                                                                 <input type="file" id="image" class="form-control"
-                                                                    name="image">
+                                                                    name="image" accept="image/*">
                                                             </div>
                                                         </div>
 
@@ -171,7 +171,7 @@
                                                             <i class="ri-settings-3-line" data-bs-toggle="modal"
                                                                 data-bs-target="#category-modal"></i></a>
                                                         <a href="/admin/delete-category/{{$category->id}}"
-                                                            class="text-reset fs-16 px-1"> <i
+                                                            class="text-reset fs-16 px-1" onclick="return confirm('Are you sure you want to delete this catalogue?');"> <i
                                                                 class="ri-delete-bin-2-line"></i></a>
                                                     </td>
                                                 </tr>

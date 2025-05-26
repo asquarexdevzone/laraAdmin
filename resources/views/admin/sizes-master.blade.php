@@ -138,7 +138,7 @@
                                                                 data-bs-target="#product-modal"></i>
                                                         </a>
                                                         <a href="/admin/delete-size/{{$size->id}}"
-                                                            class="text-reset fs-16 px-1"> <i
+                                                            class="text-reset fs-16 px-1" onclick="return confirm('Are you sure you want to delete this size?');"> <i
                                                                 class="ri-delete-bin-2-line"></i></a>
                                                     </td>
                                                 </tr>

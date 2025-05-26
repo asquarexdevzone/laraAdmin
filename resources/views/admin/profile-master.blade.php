@@ -2,189 +2,113 @@
 <html lang="en">
 
 <head>
-    <title>Add Your Color Here | LaravelAdmin</title>
-    @include('admin.include')
-    <!-- Datatables css -->
-    <link href="{{asset('vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet"
-        type="text/css" />
-    <link href="{{asset('vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css')}}" rel="stylesheet"
-        type="text/css" />
-    <link href="{{asset('vendor/datatables.net-fixedcolumns-bs5/css/fixedColumns.bootstrap5.min.css')}}"
-        rel="stylesheet" type="text/css" />
-    <link href="{{asset('vendor/datatables.net-fixedheader-bs5/css/fixedHeader.bootstrap5.min.css')}}" rel="stylesheet"
-        type="text/css" />
-    <link href="{{asset('vendor/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css')}}" rel="stylesheet"
-        type="text/css" />
-    <link href="{{asset('vendor/datatables.net-select-bs5/css/select.bootstrap5.min.css')}}" rel="stylesheet"
-        type="text/css" />
+    <title>Edit Profile | Admin</title>
+    @include('admin.include') <!-- Assuming common CSS/JS files -->
 </head>
 
 <body>
-    <!-- Begin page -->
     <div class="wrapper">
-
-
-        <!-- ========== Topbar Start ========== -->
         @include('admin.topbar')
-        <!-- ========== Topbar End ========== -->
-
-
-        <!-- ========== Left Sidebar Start ========== -->
         @include('admin.sidebar')
-        <!-- ========== Left Sidebar End ========== -->
-
-        <!-- ============================================================== -->
-        <!-- Start Page Content here -->
-        <!-- ============================================================== -->
 
         <div class="content-page">
             <div class="content">
-
-                <!-- Start Content-->
                 <div class="container-fluid">
-                    <!-- start page title -->
                     <div class="row">
                         <div class="col-12">
                             <div class="page-title-box">
-                                <div class="page-title-right">
-                                    <ol class="breadcrumb m-0">
-                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
-                                        <li class="breadcrumb-item"><a href="javascript: void(0);">color Master</a></li>
-                                    </ol>
-                                </div>
-                                <h4 class="page-title">Color Master</h4>
+                                <h4 class="page-title">Edit Profile</h4>
                             </div>
                         </div>
                     </div>
-                    <!-- end page title -->
+
+                    @if(session('success'))
+                        <div class="alert alert-success" id="alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
 
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="header-title mb-0"> Add Color Here </h4>
+                                    <h4 class="header-title mb-0">Update Your Information</h4>
                                 </div>
                                 <div class="card-body">
-                                    @if(session('success'))
-                                        <div id="alert-success" class="alert alert-success">
-                                            {{ session('success') }}
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger">
+                                            <ul class="mb-0">
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
                                         </div>
                                     @endif
-                                    <form action="/admin/add-color" method="POST">
+
+                                    <form method="POST" action="{{ route('edit.profileview') }}"
+                                        enctype="multipart/form-data">
                                         @csrf
-                                        <div id="basicwizard">
-                                            <div>
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="row mb-3">
-                                                            <label class="col-md-3 col-form-label" for="color">Color
-                                                                Name :</label>
-                                                            <div class="col-md-9">
-                                                                <input type="text" class="form-control" id="ColorName"
-                                                                    name="ColorName" placeholder="Enter Color Name"
-                                                                    required>
-                                                            </div>
-                                                        </div>
 
-                                                    </div> <!-- end col -->
-                                                </div> <!-- end row -->
-
-                                                <ul class="list-inline wizard mb-0">
-                                                    <li class="next list-inline-item float-end">
-                                                        <button type="submit" class="btn btn-info">Add Color <i
-                                                                class="ri-check-line ms-1"></i></button>
-                                                        <a href="javascript:void(0);" class="btn btn-danger">Cancel<i
-                                                                class="ri-close-fill ms-1"></i></a>
-                                                    </li>
-                                                </ul>
+                                        <div class="mb-3 row">
+                                            <label class="col-md-3 col-form-label">Username:</label>
+                                            <div class="col-md-9">
+                                                <input type="text" name="username" class="form-control" required
+                                                    value="{{ old('username', $user->name) }}"
+                                                    placeholder="Enter your username">
                                             </div>
+                                        </div>
 
-                                        </div> <!-- tab-content -->
-                                </div> <!-- end #basicwizard-->
-                                </form>
+                                        <div class="mb-3 row">
+                                            <label class="col-md-3 col-form-label">Password:</label>
+                                            <div class="col-md-9">
+                                                <input type="password" name="password" class="form-control"
+                                                    placeholder="Enter new password (leave blank to keep current)">
+                                            </div>
+                                        </div>
 
-                            </div> <!-- end card-body -->
-                        </div> <!-- end card-->
-                    </div> <!-- end col -->
-                </div><!-- end row -->
+                                        <div class="mb-3 row">
+                                            <label class="col-md-3 col-form-label">Re-enter Password:</label>
+                                            <div class="col-md-9">
+                                                <input type="password" name="password_confirmation" class="form-control"
+                                                    placeholder="Re-enter password">
+                                            </div>
+                                        </div>
 
-                <div class="row">
-                    <div class="col-xl-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="header-title">Your Added Color</h4>
-                                <p class="text-muted mb-0">
-                                    Play With Your Color 😉
-                                </p>
+                                        <!-- Logo Upload -->
+                                        <div class="mb-3 row">
+                                            <label class="col-md-3 col-form-label">Upload Logo:</label>
+                                            <div class="col-md-9">
+                                                <input type="file" name="logo" class="form-control" accept="image/*">
+                                                @if($user->logo)
+                                                    <div class="mt-2">
+                                                        <img src="{{ asset('uploads/logos/' . $user->logo) }}" alt="Logo"
+                                                            height="60">
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="text-end">
+                                            <button type="submit" class="btn btn-info">
+                                                Update <i class="ri-check-line ms-1"></i>
+                                            </button>
+                                            <a href="{{ url()->previous() }}" class="btn btn-danger">
+                                                Cancel <i class="ri-close-fill ms-1"></i>
+                                            </a>
+                                        </div>
+
+                                    </form>
+                                </div>
                             </div>
-                            <div class="card-body">
-                                <div class="table-responsive-sm">
-                                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
-                                        <thead>
-                                            <tr>
-                                                <th>Color ID</th>
-                                                <th>Color Name</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($colors as $color)
-                                                <tr>
-                                                    <td>{{ $color->id }}</td>
-                                                    <td>{{ $color->name }}</td>
-                                                    <td>
-                                                        <a href="javascript:void(0);" class="text-reset fs-16 px-1"
-                                                            onclick="editcolor({{ $color->id }})">
-                                                            <i class="ri-settings-3-line" data-bs-toggle="modal"
-                                                                data-bs-target="#color-modal"></i></a>
-                                                        <a href="/admin/delete-color/{{ $color->id }}"
-                                                            class="text-reset fs-16 px-1" onclick="return confirm('Are you sure you want to delete this color?');"> <i
-                                                                class="ri-delete-bin-2-line"></i></a>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div> <!-- end table-responsive-->
-                            </div> <!-- end card body-->
-                        </div> <!-- end card -->
-                    </div><!-- end col-->
-                </div> <!-- container -->
-            </div> <!-- content -->
-            <!-- Signup modal content -->
-            <div id="color-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <form id="updateColorForm" method="POST" action="#">
-                                @csrf
-                                @method('PUT')
-                                <div class="mb-3">
-                                    <label for="color_name" class="form-label">Update Color Name</label>
-                                    <input class="form-control" type="text" id="color_name" name="ColorName" required
-                                        placeholder="Color Name">
-                                </div>
-                                <div class="mb-3 text-center">
-                                    <button class="btn btn-primary" type="submit">Update</button>
-                                </div>
-                            </form>
                         </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
-            <!-- Footer Start -->
-            @include('admin.footer')
-            <!-- end Footer -->
-        </div>
-
-        <!-- ============================================================== -->
-        <!-- End Page content -->
-        <!-- ============================================================== -->
-
-
+                    </div> <!-- end row -->
+                    <!-- Footer Start -->
+                    @include('admin.footer')
+                    <!-- end Footer -->
+                </div> <!-- container-fluid -->
+            </div> <!-- content -->
+        </div> <!-- content-page -->
     </div>
-    <!-- END wrapper -->
-
     <!-- Theme Settings -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="theme-settings-offcanvas">
         <div class="d-flex align-items-center bg-primary p-3 offcanvas-header">
@@ -386,7 +310,6 @@
             </div>
         </div>
     </div>
-
     <!-- Vendor js -->
     <script src="{{ asset('js/vendor.min.js') }}"></script>
 
@@ -428,26 +351,6 @@
 
     <!-- App js -->
     <script src="{{asset('js/app.min.js')}}"></script>
-
-    <script>
-        function editcolor(colorId) {
-            // Make an AJAX request to fetch color data
-            $.ajax({
-                url: `/admin/edit-color/${colorId}`,
-                type: 'GET',
-                success: function (response) {
-                    // Populate the modal fields with the fetched data
-                    $('#color_name').val(response.name);
-                    $('#updateColorForm').attr('action', `/admin/update-color/${colorId}`);
-                    $('#color-modal').modal('show');
-                },
-                error: function () {
-                    alert('Failed to fetch color data. Please try again.');
-                }
-            });
-        }
-    </script>
-
 </body>
 
 </html>

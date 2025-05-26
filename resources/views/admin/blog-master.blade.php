@@ -101,7 +101,7 @@
                                                                 Image :</label>
                                                             <div class="col-md-9">
                                                                 <input type="file" id="blog_image" class="form-control"
-                                                                    name="blog_image">
+                                                                    name="blog_image" accept="image/*">
                                                             </div>
                                                         </div>
 
@@ -181,7 +181,7 @@
                                                                     data-bs-target="#color-modal"></i></a>
 
                                                             <a href="/admin/delete-blog/{{$blog->id}}"
-                                                                class="text-reset fs-16 px-1"> <i
+                                                                class="text-reset fs-16 px-1" onclick="return confirm('Are you sure you want to delete this blog?');"> <i
                                                                     class="ri-delete-bin-2-line"></i></a>
                                                         </td>
                                                     </tr>

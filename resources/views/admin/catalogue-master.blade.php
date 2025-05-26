@@ -159,7 +159,8 @@
                                                                 Coverpage :</label>
                                                             <div class="col-md-9">
                                                                 <input type="file" id="catalogue-coverpage"
-                                                                    class="form-control" name="catalogue_coverpage">
+                                                                    class="form-control" name="catalogue_coverpage"
+                                                                    accept="image/*">
                                                             </div>
                                                         </div>
 
@@ -168,7 +169,8 @@
                                                                 Catalogue From Device :</label>
                                                             <div class="col-md-9">
                                                                 <input type="file" id="catalogue-pdf"
-                                                                    class="form-control" name="catalogue_pdf">
+                                                                    class="form-control" name="catalogue_pdf"
+                                                                    accept="application/pdf">
                                                             </div>
                                                         </div>
 
@@ -233,8 +235,9 @@
                                                             <i class="ri-settings-3-line" data-bs-toggle="modal"
                                                                 data-bs-target="#catalogue-modal"></i></a>
                                                         <a href="/admin/delete-catalogue/{{ $catalogue->id }}"
-                                                            class="text-reset fs-16 px-1"> <i
-                                                                class="ri-delete-bin-2-line"></i></a>
+                                                            class="text-reset fs-16 px-1"
+                                                            onclick="return confirm('Are you sure you want to delete this catalogue?');">
+                                                            <i class="ri-delete-bin-2-line"></i></a>
                                                     </td>
                                                 </tr>
                                             @endforeach
